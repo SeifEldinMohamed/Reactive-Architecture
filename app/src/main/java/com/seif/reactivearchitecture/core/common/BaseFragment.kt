@@ -9,6 +9,8 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import java.util.*
+
 
 open class BaseFragment : Fragment() { // to reuse getting location of user
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -16,7 +18,6 @@ open class BaseFragment : Fragment() { // to reuse getting location of user
     private var locationRequest: LocationRequest? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setUpLocationClient()
 
     }

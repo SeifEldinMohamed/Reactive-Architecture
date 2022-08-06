@@ -1,12 +1,10 @@
 package com.seif.reactivearchitecture.ui.feature.map
 
 import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -14,7 +12,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.seif.reactivearchitecture.R
+import permissions.dispatcher.*
 
+@RuntimePermissions
 class RestaurantMapFragment : Fragment(), OnMapReadyCallback {
         private lateinit var map:GoogleMap
    // private val callback = OnMapReadyCallback { googleMap ->
@@ -50,4 +50,64 @@ class RestaurantMapFragment : Fragment(), OnMapReadyCallback {
         map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
+    // MARK -- handle permissions
+
+    @NeedsPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) // request permission
+    fun getCurrentLocation() {
+//        if (isLocationEnabled()) {
+//            getLastKnownLocation {
+//                // log the location
+//                Timber.e("available lat , long: %s,%s", it.latitude, it.longitude)
+//                //call foursquare api to get restaurants
+//                val currentLatLng = LatLng(it.latitude ,it.longitude)
+//                val currentBounds = googleMap?.projection?.visibleRegion?.latLngBounds
+//                if (currentBounds!=null && currentLatLng!=null)
+//                    mapViewModel.getRestaurants(RequestDto(currentLatLng,currentBounds))
+//            }
+//        } else {
+//            MaterialAlertDialogBuilder(getRootActivity())
+//                .setTitle(getString(R.string.location_not_enabled))
+//                .setMessage(getString(R.string.enable_location))
+//                .setPositiveButton(getString(R.string.enable)) { dialog, _ ->
+//                    // open settings screen
+//                    openSettingsScreen()
+//                    dialog.dismiss()
+//                }
+//                .setNegativeButton(getString(R.string.deny)) { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//                .show()
+//        }
+    }
+
+    @OnShowRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) //
+    fun OnRationalAskLocation(request: PermissionRequest) {
+//        MaterialAlertDialogBuilder(getRootActivity())
+//            .setMessage(getString(R.string.location_alert))
+//            .setPositiveButton(getString(R.string.accept)) { dialog, _ ->
+//                request.proceed()
+//                dialog.dismiss()
+//            }
+//            .setNegativeButton(getString(R.string.deny)) { dialog, _ ->
+//                request.cancel()
+//                dialog.dismiss()
+//            }.show()
+
+    }
+
+    @OnPermissionDenied(android.Manifest.permission.ACCESS_FINE_LOCATION) // when permission denied
+    fun OnDenyAskLocation() {
+//        Toast.makeText(getRootActivity(), getString(R.string.location_denied), Toast.LENGTH_SHORT)
+//            .show()
+    }
+
+    @OnNeverAskAgain(android.Manifest.permission.ACCESS_FINE_LOCATION) // used when user click don't ask again
+    fun OnNeverAskLocation() {
+//        val openApplicationSettings = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//        openApplicationSettings.data = Uri.fromParts("package", activity?.packageName, null)
+//        applicationSettingsScreen.launch(openApplicationSettings)
+    }
+
+
+    // MARK end
 }
