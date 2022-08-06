@@ -5,17 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.seif.reactivearchitecture.R
 import permissions.dispatcher.*
+import com.seif.reactivearchitecture.core.common.BaseFragment
+import timber.log.Timber
+import java.lang.Compiler.enable
 
 @RuntimePermissions
-class RestaurantMapFragment : Fragment(), OnMapReadyCallback {
+class RestaurantMapFragment : BaseFragment(), OnMapReadyCallback {
         private lateinit var map:GoogleMap
    // private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -54,31 +59,32 @@ class RestaurantMapFragment : Fragment(), OnMapReadyCallback {
 
     @NeedsPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) // request permission
     fun getCurrentLocation() {
-//        if (isLocationEnabled()) {
-//            getLastKnownLocation {
-//                // log the location
-//                Timber.e("available lat , long: %s,%s", it.latitude, it.longitude)
+        if (isLocationEnable()) {
+           getLatKnownLocation {
+                // log the location
+                Timber.e("available lat , long: ${it.latitude} ${it.longitude}") // e: error
 //                //call foursquare api to get restaurants
 //                val currentLatLng = LatLng(it.latitude ,it.longitude)
 //                val currentBounds = googleMap?.projection?.visibleRegion?.latLngBounds
 //                if (currentBounds!=null && currentLatLng!=null)
 //                    mapViewModel.getRestaurants(RequestDto(currentLatLng,currentBounds))
-//            }
-//        } else {
-//            MaterialAlertDialogBuilder(getRootActivity())
-//                .setTitle(getString(R.string.location_not_enabled))
-//                .setMessage(getString(R.string.enable_location))
-//                .setPositiveButton(getString(R.string.enable)) { dialog, _ ->
-//                    // open settings screen
-//                    openSettingsScreen()
-//                    dialog.dismiss()
-//                }
-//                .setNegativeButton(getString(R.string.deny)) { dialog, _ ->
-//                    dialog.dismiss()
-//                }
-//                .show()
-//        }
+            }
+        } else {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.location_not_enabled))
+                .setMessage(getString(R.string.enable_location))
+                .setPositiveButton(getString(R.string.enable)) { dialog, _ ->
+                    // open settings screen
+                  //  openSettingsScreen()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.deny)) { dialog, _ ->
+                    dialog.dismiss()
+               }
+                .show()
+        }
     }
+
 
     @OnShowRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) //
     fun OnRationalAskLocation(request: PermissionRequest) {

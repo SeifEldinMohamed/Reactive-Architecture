@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Reactive Architecture</string>
+    <string name="location_not_enabled">Location is not enabled</string>
+    <string name="enable_location">Location is enabled</string>
+    <string name="enable">Enable</string>
+    <string name="deny">Deny</string>
 </resources>

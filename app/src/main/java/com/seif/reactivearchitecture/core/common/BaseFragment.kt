@@ -1,7 +1,9 @@
 package com.seif.reactivearchitecture.core.common
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import androidx.fragment.app.Fragment
@@ -28,7 +30,7 @@ open class BaseFragment : Fragment() { // to reuse getting location of user
 
     // private fun getRootActivity() = activity as FragmentActivity
     @SuppressLint("MissingPermission")
-    private fun getLatKnownLocation(onLocationAvailable: (location: Location) -> Unit) {
+    fun getLatKnownLocation(onLocationAvailable: (location: Location) -> Unit) {
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null)
                 onLocationAvailable(location)
@@ -66,6 +68,7 @@ open class BaseFragment : Fragment() { // to reuse getting location of user
         if (locationCallback !=null)
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
+
     override fun onResume() {
         super.onResume()
     }
@@ -75,11 +78,13 @@ open class BaseFragment : Fragment() { // to reuse getting location of user
 
     }
 
-//    fun isLocationEnabled() : Boolean{
-//        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//        return  locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-//                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-//    }
+    fun isLocationEnable() : Boolean{
+        val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return  locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+
 }
 
 /** Change Location Setting: **/
